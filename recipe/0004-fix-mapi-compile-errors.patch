@@ -1,0 +1,62 @@
+diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMAPISession.cpp pywin32-221/com/win32comext/mapi/src/PyIMAPISession.cpp
+--- pywin32-221.orig/com/win32comext/mapi/src/PyIMAPISession.cpp	2017-09-15 08:47:32.000000000 +0100
++++ pywin32-221/com/win32comext/mapi/src/PyIMAPISession.cpp	2017-09-15 09:00:53.000000000 +0100
+@@ -775,7 +775,11 @@
+ 	IMAPIAdviseSink *psink = NULL;
+ 	if (!PyCom_InterfaceFromPyObject(obSink, IID_IMAPIAdviseSink, (void **)&psink, FALSE))
+ 		return NULL;
+-	unsigned long connection;
++#if _MSC_VER >= 1900
++		ULONG_PTR connection;
++#else
++		ULONG connection;
++#endif
+ 	HRESULT _result;
+ 	PyObject *rc;
+ 	Py_BEGIN_ALLOW_THREADS
+diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMAPITable.cpp pywin32-221/com/win32comext/mapi/src/PyIMAPITable.cpp
+--- pywin32-221.orig/com/win32comext/mapi/src/PyIMAPITable.cpp	2017-09-15 08:47:32.000000000 +0100
++++ pywin32-221/com/win32comext/mapi/src/PyIMAPITable.cpp	2017-09-15 09:00:53.000000000 +0100
+@@ -673,8 +673,13 @@
+     HRESULT  _result;
+     unsigned long  _arg0;
+     IMAPIAdviseSink * _arg1;
+-    unsigned long * _arg2;
+-    unsigned long  temp;
++#if _MSC_VER >= 1900
++    ULONG_PTR * _arg2;
++    ULONG_PTR  temp;
++#else
++    ULONG * _arg2;
++    ULONG  temp;
++#endif
+     PyObject * _obj1 = 0;
+ 
+ {
+@@ -1261,8 +1266,13 @@
+ PyObject *PyIMAPITable::CreateBookmark(PyObject *self, PyObject *args) {
+     PyObject * _resultobj;
+     HRESULT  _result;
+-    unsigned long * _arg0;
+-    unsigned long  temp;
++#if _MSC_VER >= 1900
++    ULONG_PTR * _arg0;
++    ULONG_PTR  temp;
++#else
++    ULONG * _arg0;
++    ULONG  temp;
++#endif
+ 
+ {
+   _arg0 = &temp;
+diff -urN pywin32-221.orig/win32/src/win32job.i pywin32-221/win32/src/win32job.i
+--- pywin32-221.orig/win32/src/win32job.i	2017-09-15 08:47:32.000000000 +0100
++++ pywin32-221/win32/src/win32job.i	2017-09-15 08:48:13.000000000 +0100
+@@ -459,7 +459,6 @@
+ 
+ #define JOB_OBJECT_BASIC_LIMIT_VALID_FLAGS JOB_OBJECT_BASIC_LIMIT_VALID_FLAGS
+ #define JOB_OBJECT_EXTENDED_LIMIT_VALID_FLAGS JOB_OBJECT_EXTENDED_LIMIT_VALID_FLAGS
+-#define JOB_OBJECT_RESERVED_LIMIT_VALID_FLAGS JOB_OBJECT_RESERVED_LIMIT_VALID_FLAGS
+ 
+ #define JOB_OBJECT_UILIMIT_NONE JOB_OBJECT_UILIMIT_NONE
+ #define JOB_OBJECT_UILIMIT_HANDLES JOB_OBJECT_UILIMIT_HANDLES
