@@ -1,6 +1,6 @@
 diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMAPISession.cpp pywin32-221/com/win32comext/mapi/src/PyIMAPISession.cpp
---- pywin32-221.orig/com/win32comext/mapi/src/PyIMAPISession.cpp	2017-09-15 08:47:32.000000000 +0100
-+++ pywin32-221/com/win32comext/mapi/src/PyIMAPISession.cpp	2017-09-15 09:00:53.000000000 +0100
+--- pywin32-221.orig/com/win32comext/mapi/src/PyIMAPISession.cpp	2017-09-15 10:38:01.000000000 +0100
++++ pywin32-221/com/win32comext/mapi/src/PyIMAPISession.cpp	2017-09-15 10:37:42.000000000 +0100
 @@ -775,7 +775,11 @@
  	IMAPIAdviseSink *psink = NULL;
  	if (!PyCom_InterfaceFromPyObject(obSink, IID_IMAPIAdviseSink, (void **)&psink, FALSE))
@@ -15,8 +15,8 @@ diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMAPISession.cpp pywin32-2
  	PyObject *rc;
  	Py_BEGIN_ALLOW_THREADS
 diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMAPITable.cpp pywin32-221/com/win32comext/mapi/src/PyIMAPITable.cpp
---- pywin32-221.orig/com/win32comext/mapi/src/PyIMAPITable.cpp	2017-09-15 08:47:32.000000000 +0100
-+++ pywin32-221/com/win32comext/mapi/src/PyIMAPITable.cpp	2017-09-15 09:00:53.000000000 +0100
+--- pywin32-221.orig/com/win32comext/mapi/src/PyIMAPITable.cpp	2017-09-15 10:38:01.000000000 +0100
++++ pywin32-221/com/win32comext/mapi/src/PyIMAPITable.cpp	2017-09-15 10:37:42.000000000 +0100
 @@ -673,8 +673,13 @@
      HRESULT  _result;
      unsigned long  _arg0;
@@ -49,3 +49,18 @@ diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMAPITable.cpp pywin32-221
  
  {
    _arg0 = &temp;
+diff -urN pywin32-221.orig/com/win32comext/mapi/src/PyIMsgStore.cpp pywin32-221/com/win32comext/mapi/src/PyIMsgStore.cpp
+--- pywin32-221.orig/com/win32comext/mapi/src/PyIMsgStore.cpp	2017-09-15 10:37:51.000000000 +0100
++++ pywin32-221/com/win32comext/mapi/src/PyIMsgStore.cpp	2017-09-15 10:45:25.000000000 +0100
+@@ -832,7 +832,11 @@
+ 	LPENTRYID eid;
+ 	ULONG ulEventMask;
+ 	LPMAPIADVISESINK lpAdviseSink;
++#if _MSC_VER >= 1900
++	ULONG_PTR lpulConnection;
++#else
+ 	ULONG lpulConnection;
++#endif
+ 
+ 	IMsgStore *_swig_self;
+ 	if ((_swig_self=GetI(self))==NULL) return NULL;
