@@ -78,4 +78,8 @@ if %PY3K%==1 (
    del %PREFIX%\Lib\lib2to3\*.pickle
 )
 
+:: I have no idea why sometimes, at random, these do not get copied. They are neccesary!
+robocopy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\
+robocopy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\
+
 exit 0
