@@ -16,16 +16,29 @@ if %PY3K%==1 (
 
 if %UCRT_BUILD%==1 (
     set "INCLUDE=%INCLUDE%%RECIPE_DIR%\Outlook2010MAPIHeaderFiles;"
+) else (
+:: Sed MSSDK to try to avoid linking error:
+:: AXDebug.obj : error LNK2001: unresolved external symbol CLSID_MachineDebugManager
+    set "WIN_SDK_ROOT=C:\Program Files (x86)\Microsoft SDKs\Windows"
+    set WINDOWS_SDK_VERSION=v7.1A
+    "!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Setup\WindowsSdkVer.exe" -q -version:!WINDOWS_SDK_VERSION!
+    "%WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Bin\SetEnv.cmd" /x64 /release
+    set "MSSdk=!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!"
+    set "WindowsSdkDir=!MSSdk!"
 )
+set DISTUTILS_DEBUG=1
+set
 
 if %PY3K%==1 (
   python setup3.py build -c msvc
-  if errorlevel 1 exit 1
+  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
   python setup3.py install --skip-build
+  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 ) else (
   python setup.py build -c msvc
-  if errorlevel 1 exit 1
+  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
   python setup.py install --skip-build
+  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 )
 
 :: below here, we copy MFC and ATL redistributable DLLs into places that should be on PATH
@@ -82,4 +95,4 @@ if %PY3K%==1 (
 robocopy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\
 robocopy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\
 
-exit 0
+exit 1
