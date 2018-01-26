@@ -16,29 +16,25 @@ if %PY3K%==1 (
 
 if %UCRT_BUILD%==1 (
     set "INCLUDE=%INCLUDE%%RECIPE_DIR%\Outlook2010MAPIHeaderFiles;"
-) else (
+)
+
 :: Sed MSSDK to try to avoid linking error:
 :: AXDebug.obj : error LNK2001: unresolved external symbol CLSID_MachineDebugManager
-    set "WIN_SDK_ROOT=C:\Program Files (x86)\Microsoft SDKs\Windows"
-    set WINDOWS_SDK_VERSION=v7.1A
-    "!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Setup\WindowsSdkVer.exe" -q -version:!WINDOWS_SDK_VERSION!
-    "%WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Bin\SetEnv.cmd" /x64 /release
-    set "MSSdk=!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!"
-    set "WindowsSdkDir=!MSSdk!"
-)
+::    This SDK comes from https://www.microsoft.com/en-us/download/details.aspx?id=8279
+set "WIN_SDK_ROOT=C:\Program Files\Microsoft SDKs\Windows"
+set WINDOWS_SDK_VERSION=v7.1
+"!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Setup\WindowsSdkVer.exe" -q -version:!WINDOWS_SDK_VERSION!
+"%WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Bin\SetEnv.cmd" /x64 /release
+set "MSSdk= !WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!"
+set "WindowsSdkDir=!MSSdk!"
+
 set DISTUTILS_DEBUG=1
 set
 
 if %PY3K%==1 (
-  python setup3.py build -c msvc
-  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-  python setup3.py install --skip-build
-  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+  %PYTHON% setup3.py install
 ) else (
-  python setup.py build -c msvc
-  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
-  python setup.py install --skip-build
-  if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+  %PYTHON% setup.py install
 )
 
 :: below here, we copy MFC and ATL redistributable DLLs into places that should be on PATH
@@ -71,7 +67,7 @@ if %UCRT_BUILD%==1 (
 :: define PYWINTYPES_EXPORT __declspec(dllimport)
 :: .. and ..
 :: pragma comment(lib,"pywintypes.lib")
-:  .. and then (at least): win32/src/win32apimodule.cpp
+::  .. and then (at least): win32/src/win32apimodule.cpp
 :: PYWINTYPES_EXPORT PyObject *PyWin_NewUnicode(PyObject *self, PyObject *args);
 :: therefore copying is the only recourse. At first glance, it may
 :: seem that moving these DLLs would work, but _win32sysloader.cpp
@@ -92,7 +88,4 @@ if %PY3K%==1 (
 )
 
 :: I have no idea why sometimes, at random, these do not get copied. They are neccesary!
-robocopy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\
-robocopy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\
-
-exit 1
+copy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %LIBRARY_BIN%\
