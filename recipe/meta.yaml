@@ -1,7 +1,7 @@
 {% set name = "pywin32" %}
-{% set version = "222" %}
+{% set version = "223" %}
 {% set hash_type = "sha256" %}
-{% set hash = "e4a1269c9f291fa5f6b46beed1c0ad9f568a7bdf181621de127065362cf53058" %}
+{% set hash = "8e5b79d8875ceffe82bcde88321c7ffad4a9917defd80d6f1a532b3bae0fed83" %}
 
 package:
   name: {{ name }}
