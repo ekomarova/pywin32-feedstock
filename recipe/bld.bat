@@ -25,11 +25,19 @@ set "WIN_SDK_ROOT=C:\Program Files\Microsoft SDKs\Windows"
 set WINDOWS_SDK_VERSION=v7.1
 "!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Setup\WindowsSdkVer.exe" -q -version:!WINDOWS_SDK_VERSION!
 "%WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Bin\SetEnv.cmd" /x64 /release
-set "MSSdk= !WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!"
+set "MSSdk=!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!"
 set "WindowsSdkDir=!MSSdk!"
-
 set DISTUTILS_DEBUG=1
 set
+
+:: Spent too much time running into this. If you do not have
+:: "C:\Program Files\Microsoft SDKs\Windows\v7.1" (necessary even for UCRT builds)
+:: then PyWin32 will just pick any it finds in the registry and it will fail to build.
+:: See find_platform_sdk_dir() in setup.py
+if not exist !MSSdk! (
+  echo "FATAL: You need to install the appropriate Windows SDK into !MSSdk!"
+  exit /b 1
+)
 
 if %PY3K%==1 (
   %PYTHON% setup3.py install
