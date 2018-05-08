@@ -22,9 +22,10 @@ source:
     # running the post-install script fails, because we're not installing to the root system.
     #    Just skip it - it's stuff like registering COM stuff that we don't handle anyway.
     - nuke_post_install.patch
+    - remove-horrible-PATH-hack-from-pth-file.patch
 
 build:
-  number: 0
+  number: 1
   skip: True  # [not win]
 
 requirements:
