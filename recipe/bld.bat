@@ -20,11 +20,11 @@ if %UCRT_BUILD%==1 (
 
 :: Sed MSSDK to try to avoid linking error:
 :: AXDebug.obj : error LNK2001: unresolved external symbol CLSID_MachineDebugManager
-::    This SDK comes from https://www.microsoft.com/en-us/download/details.aspx?id=8279
 set "WIN_SDK_ROOT=C:\Program Files\Microsoft SDKs\Windows"
 set WINDOWS_SDK_VERSION=v7.1
-"!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Setup\WindowsSdkVer.exe" -q -version:!WINDOWS_SDK_VERSION!
-"%WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Bin\SetEnv.cmd" /x64 /release
+:: This comes from https://www.microsoft.com/en-us/download/details.aspx?id=8279
+:: "!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Setup\WindowsSdkVer.exe" -q -version:!WINDOWS_SDK_VERSION!
+:: "%WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!\Bin\SetEnv.cmd" /x64 /release
 set "MSSdk=!WIN_SDK_ROOT!\!WINDOWS_SDK_VERSION!"
 set "WindowsSdkDir=!MSSdk!"
 set DISTUTILS_DEBUG=1
@@ -36,6 +36,8 @@ set
 :: See find_platform_sdk_dir() in setup.py
 if not exist !MSSdk! (
   echo "FATAL: You need to install the appropriate Windows SDK into !MSSdk!"
+  echo "FATAL: Please download this from:"
+  echo "FATAL: https://www.microsoft.com/en-us/download/details.aspx?id=8279"
   exit /b 1
 )
 
