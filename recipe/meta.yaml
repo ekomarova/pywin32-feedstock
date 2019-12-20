@@ -1,7 +1,7 @@
 {% set name = "pywin32" %}
-{% set version = "223" %}
+{% set version = "227" %}
 {% set hash_type = "sha256" %}
-{% set hash = "8e5b79d8875ceffe82bcde88321c7ffad4a9917defd80d6f1a532b3bae0fed83" %}
+{% set hash = "f82946fb29d55a27b3abcd0b527ef2e8da6ea05b01dfcc40bfc14847b7673e8e" %}
 
 package:
   name: {{ name }}
@@ -12,20 +12,15 @@ source:
   url: https://github.com/mhammond/pywin32/archive/b{{ version }}.zip
   {{ hash_type }}: {{ hash }}
   patches:
-    - 0001-scintilla_makefiles.patch
-    # - 0002-ucrt-compatibility-fixes.patch
-    # - 0003-ucrt-compatibility-fixes-shell.patch
-    # disabled - 222 appears to use .i files (swig?) and not cpp files directly anymore.
-    # - 0004-fix-mapi-compile-errors.patch
-    # - 0005-remove-JOB_OBJECT_RESERVED_LIMIT_VALID_FLAGS.patch
-    - ignore_exchange_plugin.patch   # [win64]
+    # - 0001-scintilla_makefiles.patch
+    # - ignore_exchange_plugin.patch   # [win64]
     # running the post-install script fails, because we're not installing to the root system.
     #    Just skip it - it's stuff like registering COM stuff that we don't handle anyway.
-    - nuke_post_install.patch
-    - remove-horrible-PATH-hack-from-pth-file.patch
+    # - nuke_post_install.patch
+    # - remove-horrible-PATH-hack-from-pth-file.patch
 
 build:
-  number: 1
+  number: 0
   skip: True  # [not win]
 
 requirements:

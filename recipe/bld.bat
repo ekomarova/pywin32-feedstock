@@ -5,11 +5,7 @@ REM    when building this recipe, you need to associate python files with C:\aro
 :: UCRT builds requires using Windows 8.1 SDK and that
 :: does not provide the MAPI headers.
 if %PY3K%==1 (
-    if %PY_VER% == 3.4 (
-        set UCRT_BUILD=0
-    ) else (
-        set UCRT_BUILD=1
-    )
+    set UCRT_BUILD=1
 ) else (
     set UCRT_BUILD=0
 )
@@ -41,11 +37,7 @@ if not exist !MSSdk! (
   exit /b 1
 )
 
-if %PY3K%==1 (
-  %PYTHON% setup3.py install
-) else (
-  %PYTHON% setup.py install
-)
+%PYTHON% setup.py install
 
 :: below here, we copy MFC and ATL redistributable DLLs into places that should be on PATH
 set VC_PATH=x86
