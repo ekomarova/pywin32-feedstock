@@ -12,15 +12,15 @@ source:
   url: https://github.com/mhammond/pywin32/archive/b{{ version }}.zip
   {{ hash_type }}: {{ hash }}
   patches:
-    # - 0001-scintilla_makefiles.patch
-    # - ignore_exchange_plugin.patch   # [win64]
+    - 0001-scintilla-makefiles.patch
     # running the post-install script fails, because we're not installing to the root system.
     #    Just skip it - it's stuff like registering COM stuff that we don't handle anyway.
-    # - nuke_post_install.patch
-    # - remove-horrible-PATH-hack-from-pth-file.patch
+    - 0002-nuke-post-install.patch
+    - 0003-remove-PATH-pth-hack.patch
+    - 0004-remove-JOB_OBJECT_RESERVED_LIMIT_VALID_FLAGS.patch
 
 build:
-  number: 0
+  number: 1
   skip: True  # [not win]
 
 requirements:
