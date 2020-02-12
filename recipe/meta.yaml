@@ -26,6 +26,9 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
+    - m2-patch  # [win]
+    - m2-gcc-libs  # [win]
+    - patch  # [not win]
   host:
     - python
     - setuptools
@@ -33,8 +36,9 @@ requirements:
     - python
 
 about:
-  home: https://sourceforge.net/projects/pywin32
+  home: https://github.com/mhammond/pywin32
   license: PSF
+  license_file: Pythonwin/License.txt
   summary: Python extensions for Windows
   description: |
     A set of extension modules that provides access to many of the Windows API functions.
@@ -45,3 +49,4 @@ extra:
   recipe-maintainers:
     - mingwandroid
     - nicoddemus
+    - carlodri
