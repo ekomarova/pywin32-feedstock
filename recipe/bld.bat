@@ -14,7 +14,7 @@ if %UCRT_BUILD%==1 (
     set "INCLUDE=%INCLUDE%%RECIPE_DIR%\Outlook2010MAPIHeaderFiles;"
 )
 
-%PYTHON% setup.py install
+%PYTHON% setup.py -q install --record=record.txt --skip-verstamp --prefix="%PREFIX%"
 
 :: below here, we copy MFC and ATL redistributable DLLs into places that should be on PATH
 set VC_PATH=x86
@@ -54,6 +54,7 @@ if %UCRT_BUILD%==1 (
 :: My attempted fix is in import-pywintypes-from-win32api.patch
 :: An actual fix would be to make win32api a Python module that
 :: first imports pywintypes and after that imports _win32api.
+
 copy %PREFIX%\Lib\site-packages\pywin32_system32\*.dll %PREFIX%\Lib\site-packages\win32\
 
 robocopy "C:\Program Files (x86)\Microsoft Visual Studio %MSC_VER%.0\VC\redist\%VC_PATH%\Microsoft.VC%MSC_VER%0.MFC" "%LIBRARY_BIN%" *.dll /E
